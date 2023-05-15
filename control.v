@@ -52,7 +52,6 @@ module control(
     // Registers to hold current state and next state of module
     reg [4:0] state;
     reg [4:0] next_state;
-    reg [2:0] next_ir_write;
     
     always @(posedge clk) begin
         ir_write = next_ir_write;
@@ -88,10 +87,10 @@ module control(
                          aluOp = 2'b00;
                          pc_write = 1;
                          pc_source = 2'b00;
-                         next_ir_write = 3'b010;
                       end   
             STATE_IF1: begin
                          next_state = STATE_IF2;
+                         ir_write = 3'b010;
                          memread = 1;
                          aluSrcA = 0;
                          data_not_instr = 0;
@@ -100,11 +99,10 @@ module control(
                          aluOp = 2'b00;
                          pc_write = 1;
                          pc_source = 2'b00;
-                         next_ir_write = 3'b011;
                       end
             STATE_IF2: begin
                          next_state = STATE_IF3;
-                         ir_write = 1;
+                         ir_write = 3'b011;
                          memread = 1;
                          aluSrcA = 0;
                          data_not_instr = 0;
@@ -112,7 +110,6 @@ module control(
                          aluOp = 2'b00;
                          pc_write = 1;
                          pc_source = 2'b00;
-                         next_ir_write = 3'b100;
                        end
             STATE_IF3: begin
                          next_state = STATE_ID;
@@ -124,7 +121,6 @@ module control(
                          aluOp = 2'b00;
                          pc_write = 1;
                          pc_source = 2'b00;  
-                         next_ir_write = 3'b000;
                        end
             STATE_ID: begin
                         aluSrcA = 0;
